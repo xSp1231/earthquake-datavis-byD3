@@ -19,8 +19,9 @@
 
         </div>
         <div class="line">
-          <el-card shadow="hover"> 折线图 </el-card>
-
+<!--          <el-card shadow="hover"  :body-style="{ padding: '0px' }">-->
+          <Line></Line>
+<!--          </el-card>-->
         </div>
       </div>
 
@@ -39,6 +40,9 @@
   </div>
 </template>
 <script setup>
+import Line from '../components/Line.vue'
+
+
 </script>
 
 <style scoped>
@@ -114,7 +118,7 @@ div .el-card{
 .line{
   margin-top:6px;
   width:100%;
-  height:49%;
+  height:51%;
   /*background-color: #bacad0;*/
 }
 
