@@ -6,7 +6,8 @@
           <el-card shadow="hover"> 数据统计-图片呈现 </el-card>
         </div>
         <div class="pie">
-          <el-card shadow="hover"> 饼图 </el-card>
+<!--          <el-card shadow="hover" > 饼图 </el-card>-->
+          <pie-graph></pie-graph>
 
         </div>
       </div>
@@ -16,12 +17,10 @@
       <div class="tr">
         <div class="worldCloud">
           <world-cloud></world-cloud>
-
         </div>
         <div class="line">
-          <!--          <el-card shadow="hover"  :body-style="{ padding: '0px' }">-->
           <Line></Line>
-          <!--          </el-card>-->
+<!--          </el-card>-->
         </div>
       </div>
 
@@ -32,7 +31,8 @@
         <Scatter></Scatter>
       </div>
       <div class="br">
-        <el-card shadow="hover"> 排序图</el-card>
+        <!-- <el-card shadow="hover"> 排序图</el-card> -->
+        <Bar></Bar>
       </div>
     </div>
 
@@ -41,8 +41,9 @@
 <script setup>
 import Line from '../components/Line.vue'
 import WorldCloud from '../components/WorldCloud.vue';
-
 import Scatter from "../components/Scatter.vue";
+import Bar from '../components/Bar.vue'
+import PieGraph from "../components/PieGraph.vue";
 </script>
 
 <style scoped>
@@ -155,4 +156,5 @@ div .el-card {
   width: 48%;
   height: 96%;
   /*background-color: #b5cbae;*/
-}</style>
+}
+</style>

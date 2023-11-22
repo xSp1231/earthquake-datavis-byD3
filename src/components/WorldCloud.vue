@@ -206,13 +206,13 @@ export default {
     this.draw();
 
     //监听窗口变化
-    // window.addEventListener('resize', () => {
-    //   document.getElementById('WorldCloudGraphSvg').remove();
-    //   // 获取宽度和高度
-    //   this.width = document.getElementById('WorldCloudGraph').offsetWidth;
-    //   this.height = document.getElementById('WorldCloudGraph').offsetHeight;
-    //   this.draw();
-    // });
+    window.addEventListener('resize', () => {
+      document.getElementById('WorldCloudGraphSvg').remove();
+      // 获取宽度和高度
+      this.width = document.getElementById('WorldCloudGraph').offsetWidth;
+      this.height = document.getElementById('WorldCloudGraph').offsetHeight;
+      this.draw();
+    });
   }
 }
 </script>
