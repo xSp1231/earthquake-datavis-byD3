@@ -53,7 +53,8 @@ const createChart = () => {
       .range([height - marginBottom, marginTop]);
 
   const color = d3.scaleOrdinal(data.map(d => d.species), d3.schemeCategory10);
-  const shape = d3.scaleOrdinal(data.map(d => d.species), d3.symbols.map(s => d3.symbol().type(s)()));
+  // const shape = d3.scaleOrdinal(data.map(d => d.species), d3.symbols.map(s => d3.symbol().type(s)()));
+  const shape = d3.symbol().type(d3.symbolCircle);
 
   svg
       .attr("viewBox", [0, 0, width, height])
@@ -114,7 +115,25 @@ const createChart = () => {
       .join("path")
       .attr("transform", d => `translate(${x(d.sepalLength)},${y(d.sepalWidth)})`)
       .attr("fill", d =>color(d.species))
-      .attr("d", d => shape(d.species));
+      .attr("d", d => shape(d.species))
+      .on("mouseover", (event, d) => {
+        console.log(event)
+        // 鼠标悬停时显示数据
+        console.log(d); // 这里可以替换为你想要执行的代码
+        d3.select("#tooltip").remove()//删除之前已有标签，避免相互覆盖遮挡
+        svg.append("text")
+            .attr("id", "tooltip")
+            .attr("x", `${d3.pointer(event)[0]  + 'px'}`)
+            .attr("y", `${d3.pointer(event)[1]  + 80 + 'px'}`)
+            .attr("text-anchor", "left")
+            .attr("font-size", "20px")
+            .attr("fill", "blue")
+            .text( 'x:'+d.sepalLength + 'y:'+d.sepalWidth)
+       })
+       .on("mouseout", () => {
+        // 鼠标移出时隐藏提示框
+       d3.select("#tooltip").remove();
+        });
 };
 
 onMounted(() => {
