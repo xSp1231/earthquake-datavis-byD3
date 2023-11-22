@@ -29,8 +29,7 @@
 
     <div class="bottom">
       <div class="bl">
-        <el-card shadow="hover"> 散点图 </el-card>
-
+          <Scatter></Scatter>
       </div>
       <div class="br">
         <el-card shadow="hover"> 排序图</el-card>
@@ -43,6 +42,7 @@
 import Line from '../components/Line.vue'
 
 
+import Scatter from "../components/Scatter.vue";
 </script>
 
 <style scoped>

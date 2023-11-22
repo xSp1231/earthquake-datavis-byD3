@@ -24,7 +24,7 @@ const drawLineChart = () => {
   const svg = d3.select(container).append('svg')
       .attr('width', width)
       .attr('height', height);
-  const margin={top:15,bottom:15,left:15,right:15}
+  const margin={top:15,bottom:25,left:25,right:15}
 
   const data = [
     { x: 2012, y: 7 },
@@ -42,7 +42,7 @@ const drawLineChart = () => {
   console.log("year is ",year)
 
   // 定义 x 和 y 的比例尺
-  const xScale = d3.scaleBand().domain(year).range([0, width-margin.right-margin.left]);
+  const xScale = d3.scaleLinear().domain([d3.min(data, d => d.x), d3.max(data, d => d.x)]).range([0, width-margin.right-margin.left]);
   console.log("xaxis",xScale(2012))
   const yScale = d3.scaleLinear().domain([0, d3.max(data, d => d.y)]).range([height-margin.bottom-margin.top, 0]); //值小 height大
 
@@ -53,8 +53,8 @@ const drawLineChart = () => {
 
   console.log(line(data))
   //定义坐标轴
-  const xAxis = d3.axisTop(xScale).ticks(10)
-  const yAxis = d3.axisRight(yScale)
+  const xAxis = d3.axisBottom(xScale).ticks(10)
+  const yAxis = d3.axisLeft(yScale)
 
   const g=svg.append('g').attr('transform',`translate(${margin.left}, ${margin.top})`).attr('id','main')
   //x轴绘制 相对位置
