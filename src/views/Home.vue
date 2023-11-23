@@ -31,8 +31,7 @@
         <Scatter></Scatter>
       </div>
       <div class="br">
-        <!-- <el-card shadow="hover"> 排序图</el-card> -->
-        <Bar></Bar>
+<!--        <Bar></Bar>-->
       </div>
     </div>
 
