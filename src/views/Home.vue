@@ -42,8 +42,8 @@
 import Line from '../components/Line.vue'
 import WorldCloud from '../components/WorldCloud.vue';
 import Scatter from "../components/Scatter.vue";
-import Bar from '../components/Bar.vue'
 import PieGraph from "../components/PieGraph.vue";
+import Bar from '../components/Bar.vue'
 </script>
 
 <style scoped>
