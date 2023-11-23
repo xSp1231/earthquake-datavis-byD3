@@ -8,13 +8,13 @@ import * as d3 from "d3";
 
 const mainDiv = ref(null);
 const dataObject = [
-  { date: "Mon", money: 120 },
-  { date: "Tue", money: 200 },
-  { date: "Wed", money: 150 },
-  { date: "Thu", money: 80 },
-  { date: "Fri", money: 70 },
-  { date: "Sat", money: 110 },
-  { date: "Sun", money: 130 },
+  { date: "2017", money: 120 },
+  { date: "2018", money: 200 },
+  { date: "2019", money: 150 },
+  { date: "2020", money: 80 },
+  { date: "2021", money: 70 },
+  { date: "2022", money: 110 },
+  { date: "2023", money: 130 },
 ];
 
 onMounted(() => {

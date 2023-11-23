@@ -5,7 +5,6 @@
 <script>
 import * as d3 from 'd3';
 import * as cloud from 'd3-cloud';
-
 export default {
   name: "WorldCloud",
   data: () => {
