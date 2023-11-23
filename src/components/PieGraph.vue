@@ -1,12 +1,171 @@
+<!--<template>-->
+<!--  <div style="width: 100%; height: 100%;" id="chart" ref="mainDiv"></div>-->
+<!--</template>-->
+
+<!--<script setup>-->
+<!--import { onMounted, ref } from "vue";-->
+<!--import * as d3 from "d3";-->
+
+<!--const mainDiv = ref(null);-->
+<!--const dataObject = [-->
+<!--  { date: "2017", money: 120 },-->
+<!--  { date: "2018", money: 200 },-->
+<!--  { date: "2019", money: 150 },-->
+<!--  { date: "2020", money: 80 },-->
+<!--  { date: "2021", money: 70 },-->
+<!--  { date: "2022", money: 110 },-->
+<!--  { date: "2023", money: 130 },-->
+<!--];-->
+
+<!--onMounted(() => {-->
+<!--  createChart(dataObject);-->
+<!--});-->
+
+<!--function createChart(data) {-->
+<!--  const container = mainDiv.value;-->
+<!--  const width = container.offsetWidth;-->
+<!--  const height = container.offsetHeight;-->
+<!--  const svg = d3.select(container).append("svg");-->
+<!--  const config = {-->
+<!--    textColor: "#000",-->
+<!--    lineColor: "#000",-->
+<!--    animateDuration: 0,-->
+<!--    textOffsetH: 10,-->
+<!--    innerRadius: width/30,-->
+<!--    hoverScale: 1.1, // 扇形悬停放大比例-->
+<!--  };-->
+
+<!--  const scaleTextDx = d3-->
+<!--      .scaleLinear()-->
+<!--      .domain([0, Math.PI / 2])-->
+<!--      .range([config.textOffsetH, config.textOffsetH * 3]);-->
+
+<!--  svg.attr("width", width).attr("height", height);-->
+
+<!--  const chart = svg-->
+<!--      .append("g")-->
+<!--      .attr("transform", `translate(${width / 2},${height / 2})`);-->
+
+<!--  const arcAngle = d3-->
+<!--      .pie()-->
+<!--      .sort((d, i) => i)-->
+<!--      .value((d) => d.money);-->
+
+<!--  const scaleRadius = d3-->
+<!--      .scaleLinear()-->
+<!--      .domain([0, d3.max(data.map((d) => d.money))])-->
+<!--      .range([0, Math.min(width, height) * 0.5 * 0.5]);-->
+
+<!--  const slices = chart-->
+<!--      .selectAll(".arc")-->
+<!--      .data(arcAngle(data))-->
+<!--      .enter()-->
+<!--      .append("path")-->
+<!--      .attr("class", "arc")-->
+<!--      .attr("fill", (d, i) => d3.schemeCategory10[i % 10])-->
+<!--      .attr("d", d3.arc().outerRadius((d) => scaleRadius(d.data.money)).innerRadius(config.innerRadius))-->
+<!--      .on("mouseover", handleMouseOver) // 添加鼠标悬停事件-->
+<!--      .on("mouseout", handleMouseOut)// 添加鼠标移出事件-->
+<!--      .on("click", handleClick);-->
+
+<!--  const labels = chart-->
+<!--      .selectAll(".label")-->
+<!--      .data(arcAngle(data))-->
+<!--      .enter()-->
+<!--      .append("text")-->
+<!--      .classed("label", true)-->
+<!--      .attr("stroke", config.textColor)-->
+<!--      .attr("fill", config.textColor)-->
+<!--      .attr("text-anchor", (d) => (d.endAngle + d.startAngle) / 2 > Math.PI ? "end" : "start")-->
+<!--      .attr("dy", "0.35em")-->
+<!--      .attr("dx", computeTextDx)-->
+<!--      .transition()-->
+<!--      .duration(0)-->
+<!--      .delay(config.animateDuration)-->
+<!--      .attr("transform", (d) => `translate(${getArcCentorid(scaleRadius(d.value) * 2.5, d, true)})`)-->
+<!--      .text((d) => `${d.data.date}: ${d.data.money}`);-->
+
+<!--  const lines = chart-->
+<!--      .selectAll(".line")-->
+<!--      .data(getLinePoints())-->
+<!--      .enter()-->
+<!--      .insert("path", ":first-child")-->
+<!--      .classed("line", true)-->
+<!--      .transition()-->
+<!--      .duration(0)-->
+<!--      .delay(config.animateDuration)-->
+<!--      .attr("fill", "none")-->
+<!--      .attr("stroke", config.lineColor)-->
+<!--      .attr("d", generateLine);-->
+
+<!--  function computeTextDx(d) {-->
+<!--    const middleAngle = (d.endAngle + d.startAngle) / 2;-->
+<!--    const dx = middleAngle < Math.PI ? scaleTextDx(Math.abs(middleAngle - Math.PI / 2)) : -scaleTextDx(Math.abs(middleAngle - Math.PI * 3 / 2));-->
+<!--    return dx;-->
+<!--  }-->
+
+<!--  function getLinePoints() {-->
+<!--    return arcAngle(data).map((d) => {-->
+<!--      const radius = scaleRadius(d.value);-->
+<!--      const tempPoint = getArcCentorid(radius * 2.5, d, true);-->
+<!--      const tempDx = computeTextDx(d);-->
+<!--      const dx = tempDx > 0 ? tempDx - config.textOffsetH : tempDx + config.textOffsetH;-->
+<!--      return [getArcCentorid(radius, d, false), tempPoint, [tempPoint[0] + dx, tempPoint[1]]];-->
+<!--    });-->
+<!--  }-->
+
+<!--  function getArcCentorid(outerRadius, d, averageLength) {-->
+<!--    if (averageLength) outerRadius = Math.sqrt(outerRadius * 300);-->
+<!--    return d3-->
+<!--        .arc()-->
+<!--        .outerRadius(outerRadius)-->
+<!--        .innerRadius(config.innerRadius)-->
+<!--        .centroid(d);-->
+<!--  }-->
+
+<!--  function generateLine(d) {-->
+<!--    return d3.line()(d);-->
+<!--  }-->
+
+<!--  // 鼠标悬停事件处理函数-->
+<!--  function handleMouseOver(d, i) {-->
+<!--    d3.select(this)-->
+<!--        .transition()-->
+<!--        .duration(200)-->
+<!--        .attr("transform", `scale(${config.hoverScale})`); // 将扇形放大-->
+<!--  }-->
+<!--  // 鼠标移出事件处理函数-->
+<!--  function handleMouseOut(d, i) {-->
+<!--    d3.select(this)-->
+<!--        .transition()-->
+<!--        .duration(200)-->
+<!--        .attr("transform", "scale(1)"); // 将扇形恢复原始大小-->
+<!--  }-->
+<!--  function handleClick(event, d) {-->
+<!--    console.log(`Date: ${d.data.date}, Money: ${d.data.money}`);-->
+<!--  }-->
+<!--}-->
+<!--</script>-->
+
+<!--<style scoped>-->
+<!--.label {-->
+<!--  font-size: 12px;-->
+<!--}-->
+
+<!--.line {-->
+<!--  stroke: #000;-->
+<!--}-->
+<!--</style>-->
 <template>
-  <div style="width: 100%; height: 100%;" id="chart" ref="mainDiv"></div>
+  <div style="width: 100%; height: 100%;" id="PieGraph"></div>
 </template>
 
 <script setup>
 import { onMounted, ref } from "vue";
 import * as d3 from "d3";
 
-const mainDiv = ref(null);
+const width = ref(0);
+const height = ref(0);
 const dataObject = [
   { date: "2017", money: 120 },
   { date: "2018", money: 200 },
@@ -18,21 +177,35 @@ const dataObject = [
 ];
 
 onMounted(() => {
+  const PieGraph = document.getElementById("PieGraph");
+  width.value = PieGraph.offsetWidth;
+  height.value = PieGraph.offsetHeight;
   createChart(dataObject);
+
+  // 监听窗口变化
+  window.addEventListener("resize", () => {
+    d3.select("#PieGraphSvg").remove();
+    width.value = PieGraph.offsetWidth;
+    height.value = PieGraph.offsetHeight;
+    createChart(dataObject);
+  });
 });
 
 function createChart(data) {
-  const container = mainDiv.value;
-  const width = container.offsetWidth;
-  const height = container.offsetHeight;
-  const svg = d3.select(container).append("svg");
+  const svg = d3
+      .select("#PieGraph")
+      .append("svg")
+      .attr("id", "PieGraphSvg")
+      .attr("width", width.value)
+      .attr("height", height.value);
+
   const config = {
     textColor: "#000",
     lineColor: "#000",
     animateDuration: 0,
     textOffsetH: 10,
-    innerRadius: width/30,
-    hoverScale: 1.1, // 扇形悬停放大比例
+    innerRadius: width.value / 30,
+    hoverScale: 1.1,
   };
 
   const scaleTextDx = d3
@@ -40,21 +213,18 @@ function createChart(data) {
       .domain([0, Math.PI / 2])
       .range([config.textOffsetH, config.textOffsetH * 3]);
 
-  svg.attr("width", width).attr("height", height);
+  svg.attr("width", width.value).attr("height", height.value);
 
   const chart = svg
       .append("g")
-      .attr("transform", `translate(${width / 2},${height / 2})`);
+      .attr("transform", `translate(${width.value / 2},${height.value / 2})`);
 
-  const arcAngle = d3
-      .pie()
-      .sort((d, i) => i)
-      .value((d) => d.money);
+  const arcAngle = d3.pie().sort(null).value((d) => d.money);
 
   const scaleRadius = d3
       .scaleLinear()
       .domain([0, d3.max(data.map((d) => d.money))])
-      .range([0, Math.min(width, height) * 0.5 * 0.5]);
+      .range([0, Math.min(width.value, height.value) * 0.5 * 0.5]);
 
   const slices = chart
       .selectAll(".arc")
@@ -64,8 +234,8 @@ function createChart(data) {
       .attr("class", "arc")
       .attr("fill", (d, i) => d3.schemeCategory10[i % 10])
       .attr("d", d3.arc().outerRadius((d) => scaleRadius(d.data.money)).innerRadius(config.innerRadius))
-      .on("mouseover", handleMouseOver) // 添加鼠标悬停事件
-      .on("mouseout", handleMouseOut)// 添加鼠标移出事件
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut)
       .on("click", handleClick);
 
   const labels = chart
@@ -82,8 +252,10 @@ function createChart(data) {
       .transition()
       .duration(0)
       .delay(config.animateDuration)
-      .attr("transform", (d) => `translate(${getArcCentorid(scaleRadius(d.value) * 2.5, d, true)})`)
+      .attr("transform", (d) => `translate(${getArcCentroid(scaleRadius(d.value) * 2.5, d, true)})`)
       .text((d) => `${d.data.date}: ${d.data.money}`);
+
+  const linePoints = getLinePoints();
 
   const lines = chart
       .selectAll(".line")
@@ -107,14 +279,14 @@ function createChart(data) {
   function getLinePoints() {
     return arcAngle(data).map((d) => {
       const radius = scaleRadius(d.value);
-      const tempPoint = getArcCentorid(radius * 2.5, d, true);
+      const tempPoint = getArcCentroid(radius * 2.5, d, true);
       const tempDx = computeTextDx(d);
       const dx = tempDx > 0 ? tempDx - config.textOffsetH : tempDx + config.textOffsetH;
-      return [getArcCentorid(radius, d, false), tempPoint, [tempPoint[0] + dx, tempPoint[1]]];
+      return [getArcCentroid(radius, d, false), tempPoint, [tempPoint[0] + dx, tempPoint[1]]];
     });
   }
 
-  function getArcCentorid(outerRadius, d, averageLength) {
+  function getArcCentroid(outerRadius, d, averageLength) {
     if (averageLength) outerRadius = Math.sqrt(outerRadius * 300);
     return d3
         .arc()
@@ -126,33 +298,30 @@ function createChart(data) {
   function generateLine(d) {
     return d3.line()(d);
   }
-
-  // 鼠标悬停事件处理函数
   function handleMouseOver(d, i) {
-    d3.select(this)
-        .transition()
-        .duration(200)
-        .attr("transform", `scale(${config.hoverScale})`); // 将扇形放大
+    d3.select(this).attr("transform", `scale(${config.hoverScale})`);
   }
-  // 鼠标移出事件处理函数
+
   function handleMouseOut(d, i) {
-    d3.select(this)
-        .transition()
-        .duration(200)
-        .attr("transform", "scale(1)"); // 将扇形恢复原始大小
+    d3.select(this).attr("transform", "scale(1)");
   }
-  function handleClick(event, d) {
-    console.log(`Date: ${d.data.date}, Money: ${d.data.money}`);
+
+  function handleClick(d, i) {
+    console.log("Clicked:", d.data.date);
   }
 }
 </script>
 
-<style scoped>
+<style>
+.arc {
+  cursor: pointer;
+}
+
 .label {
-  font-size: 12px;
+  pointer-events: none;
 }
 
 .line {
-  stroke: #000;
+  pointer-events: none;
 }
 </style>
