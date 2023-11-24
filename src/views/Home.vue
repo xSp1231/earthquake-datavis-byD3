@@ -3,16 +3,14 @@
     <div class="top">
       <div class="tl">
         <div class="intro">
-          <el-card shadow="hover"> 数据统计-图片呈现 </el-card>
+    <intro></intro>
         </div>
         <div class="pie">
-<!--          <el-card shadow="hover" > 饼图 </el-card>-->
           <pie-graph></pie-graph>
-
         </div>
       </div>
       <div class="tm">
-        <el-card shadow="hover"> 热力地图 </el-card>
+        <HeatMap></HeatMap>
       </div>
       <div class="tr">
         <div class="worldCloud">
@@ -20,10 +18,8 @@
         </div>
         <div class="line">
           <Line></Line>
-<!--          </el-card>-->
         </div>
       </div>
-
     </div>
 
     <div class="bottom">
@@ -31,7 +27,7 @@
         <Scatter></Scatter>
       </div>
       <div class="br">
-<!--        <Bar></Bar>-->
+        <Bar></Bar>
       </div>
     </div>
 
@@ -43,6 +39,8 @@ import WorldCloud from '../components/WorldCloud.vue';
 import Scatter from "../components/Scatter.vue";
 import PieGraph from "../components/PieGraph.vue";
 import Bar from '../components/Bar.vue'
+import HeatMap from "../components/HeatMap.vue";
+import Intro from "../components/Intro.vue";
 </script>
 
 <style scoped>
@@ -98,14 +96,14 @@ div .el-card {
 
 .intro {
   width: 100%;
-  height: 40%;
+  height: 37%;
   /*background-color: #bacad0;*/
 }
 
 .pie {
   margin-top: 6px;
   width: 100%;
-  height: 59%;
+  height: 62%;
   /*background-color: #bacad0;*/
 }
 
