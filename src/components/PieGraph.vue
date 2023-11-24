@@ -148,13 +148,15 @@ function createChart(data) {
   function handleMouseOut(d, i) {
     d3.select(this).attr("transform", "scale(1)");
   }
-
   function handleClick(d, i) {
-    console.log("Clicked:", d.data.date);
+    const dataObject = d.target.__data__;
+    console.log(dataObject);
+    console.log(dataObject.value)
+    console.log(dataObject.data);
+    console.log("时间是:" +dataObject.data.date + "   "+"值是:"+dataObject.data.money);
   }
 }
 </script>
-
 <style>
 .arc {
   cursor: pointer;
