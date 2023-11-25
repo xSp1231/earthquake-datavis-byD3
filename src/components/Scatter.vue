@@ -114,7 +114,7 @@ const createChart = () => {
                   .attr("id", "tooltip")
                   .attr('z-index', 99999)
                   .style("top", `${clientY}px`)
-                  .style("left", `${clientX}px`)
+                  .style("left", `${clientX-70}px`)
                   .attr("text-anchor", "center")
                   .attr("font-size", "20px")
                   .attr("fill", "blue")
