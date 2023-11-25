@@ -10,6 +10,7 @@ import * as d3 from "d3";
 const width = ref(0);
 const height = ref(0);
 const dataObject = [
+  { date: "2016", money: 100 },
   { date: "2017", money: 120 },
   { date: "2018", money: 200 },
   { date: "2019", money: 150 },

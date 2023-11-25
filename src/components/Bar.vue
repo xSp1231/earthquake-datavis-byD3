@@ -34,7 +34,7 @@ export default {
       const formatPercent = d3.format(".2f");
 
       const render = async function (data) {
-        console.log(data)
+        // console.log(data)
         // 按年份分组数据
         const groupedData = d3.group(data, d => d.year);
 
@@ -91,9 +91,9 @@ export default {
         }
       }
 
-      /* 
-        Loading data and preprocessing data. 
-        Note that you can also preprocessing data in your own way using your prefered language, e.g., Python. 
+      /*
+        Loading data and preprocessing data.
+        Note that you can also preprocessing data in your own way using your prefered language, e.g., Python.
       */
       d3.csv('pgy.csv').then(async data => {
         data = data.map(d => {
@@ -103,7 +103,7 @@ export default {
             "year": +(d.year)
           }
         })
-        console.log(data)
+        // console.log(data)
         // get all years:
         const years = Array.from(new Set(data.map(d => d.year)));
         years.sort();
@@ -113,20 +113,20 @@ export default {
         colorScale.domain(platforms);
         const sp = d3.scalePoint().domain(platforms).range([0, 1]);
         colorScale.range(platforms.map(d => d3.interpolateSpectral(sp(d))));
-        // calculationg initial scales: 
+        // calculationg initial scales:
         yScale.range([0, innerHeight]).padding(0.1);
         xScale.range([0, innerWidth]);
-        // adding axes: 
+        // adding axes:
         xAxis = d3.axisBottom(xScale);
         yAxis = d3.axisLeft(yScale);
         xAxisGroup = mainGroup.append('g').call(xAxis);
         yAxisGroup = mainGroup.append('g').call(yAxis);
         xAxisGroup.attr('transform', `translate(${0}, ${innerHeight})`);
-        // titles of axes: 
+        // titles of axes:
         yAxisGroup.append('text').attr('class', 'axisTitle').text('Platform')
           .attr('transform', 'rotate(-90)').attr('x', -innerHeight / 2).attr('y', -60);
         d3.selectAll('.axisTitle').attr('text-anchor', "middle").attr('fill', 'black').attr('font-size', '2em');
-        // font-size of texts of axes: 
+        // font-size of texts of axes:
         d3.selectAll('.tick text').attr('font-size', '1.5em')
         data.sort((a, b) => b.globalsale - a.globalsale);
         for (let i = 0; i < years.length; i++) {

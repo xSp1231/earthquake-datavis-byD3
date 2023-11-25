@@ -4,34 +4,35 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import {onMounted, ref, watch} from "vue";
 import * as d3 from "d3";
-const width =ref(0);
-const height =ref(0);
+
+const width = ref(0);
+const height = ref(0);
 
 const data = [
-  { sepalLength: 5.1, sepalWidth: 3.5, petalLength: 1.4, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 4.9, sepalWidth: 3, petalLength: 1.4, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 4.7, sepalWidth: 3.2, petalLength: 1.3, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 4.6, sepalWidth: 3.1, petalLength: 1.5, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 5, sepalWidth: 3.6, petalLength: 1.4, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 5.4, sepalWidth: 3.9, petalLength: 1.7, petalWidth: 0.4, species: 'setosa' },
-  { sepalLength: 4.6, sepalWidth: 3.4, petalLength: 1.4, petalWidth: 0.3, species: 'setosa' },
-  { sepalLength: 5, sepalWidth: 3.4, petalLength: 1.5, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 4.4, sepalWidth: 2.9, petalLength: 1.4, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 4.9, sepalWidth: 3.1, petalLength: 1.5, petalWidth: 0.1, species: 'setosa' },
-  { sepalLength: 5.4, sepalWidth: 3.7, petalLength: 1.5, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 4.8, sepalWidth: 3.4, petalLength: 1.6, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 4.8, sepalWidth: 3, petalLength: 1.4, petalWidth: 0.1, species: 'setosa' },
-  { sepalLength: 4.3, sepalWidth: 3, petalLength: 1.1, petalWidth: 0.1, species: 'setosa' },
-  { sepalLength: 5.8, sepalWidth: 4, petalLength: 1.2, petalWidth: 0.2, species: 'setosa' },
-  { sepalLength: 6.4, sepalWidth: 3.2, petalLength: 4.5, petalWidth: 1.5, species: 'versicolor' },
-  { sepalLength: 6.9, sepalWidth: 3.1, petalLength: 4.9, petalWidth: 1.5, species: 'versicolor' },
-  { sepalLength: 5.5, sepalWidth: 2.3, petalLength: 4, petalWidth: 1.3, species: 'versicolor' },
-  { sepalLength: 6.5, sepalWidth: 2.8, petalLength: 4.6, petalWidth: 1.5, species: 'versicolor' },
-  { sepalLength: 5.7, sepalWidth: 2.8, petalLength: 4.5, petalWidth: 1.3, species: 'versicolor' },
-  { sepalLength: 6.3, sepalWidth: 3.3, petalLength: 4.7, petalWidth: 1.6, species: 'versicolor' },
-  { sepalLength: 4.9, sepalWidth: 2.4, petalLength: 3.3, petalWidth: 1, species: 'versicolor' },
+  {sepalLength: 5.1, sepalWidth: 3.5, petalLength: 1.4, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 4.9, sepalWidth: 3, petalLength: 1.4, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 4.7, sepalWidth: 3.2, petalLength: 1.3, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 4.6, sepalWidth: 3.1, petalLength: 1.5, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 5, sepalWidth: 3.6, petalLength: 1.4, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 5.4, sepalWidth: 3.9, petalLength: 1.7, petalWidth: 0.4, species: 'setosa'},
+  {sepalLength: 4.6, sepalWidth: 3.4, petalLength: 1.4, petalWidth: 0.3, species: 'setosa'},
+  {sepalLength: 5, sepalWidth: 3.4, petalLength: 1.5, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 4.4, sepalWidth: 2.9, petalLength: 1.4, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 4.9, sepalWidth: 3.1, petalLength: 1.5, petalWidth: 0.1, species: 'setosa'},
+  {sepalLength: 5.4, sepalWidth: 3.7, petalLength: 1.5, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 4.8, sepalWidth: 3.4, petalLength: 1.6, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 4.8, sepalWidth: 3, petalLength: 1.4, petalWidth: 0.1, species: 'setosa'},
+  {sepalLength: 4.3, sepalWidth: 3, petalLength: 1.1, petalWidth: 0.1, species: 'setosa'},
+  {sepalLength: 5.8, sepalWidth: 4, petalLength: 1.2, petalWidth: 0.2, species: 'setosa'},
+  {sepalLength: 6.4, sepalWidth: 3.2, petalLength: 4.5, petalWidth: 1.5, species: 'versicolor'},
+  {sepalLength: 6.9, sepalWidth: 3.1, petalLength: 4.9, petalWidth: 1.5, species: 'versicolor'},
+  {sepalLength: 5.5, sepalWidth: 2.3, petalLength: 4, petalWidth: 1.3, species: 'versicolor'},
+  {sepalLength: 6.5, sepalWidth: 2.8, petalLength: 4.6, petalWidth: 1.5, species: 'versicolor'},
+  {sepalLength: 5.7, sepalWidth: 2.8, petalLength: 4.5, petalWidth: 1.3, species: 'versicolor'},
+  {sepalLength: 6.3, sepalWidth: 3.3, petalLength: 4.7, petalWidth: 1.6, species: 'versicolor'},
+  {sepalLength: 4.9, sepalWidth: 2.4, petalLength: 3.3, petalWidth: 1, species: 'versicolor'},
 ];
 
 const createChart = () => {
@@ -122,12 +123,17 @@ const createChart = () => {
       .on("mouseover", (event, d) => {
         console.log(event);
         console.log(d);
-        d3.select("#tooltip").remove();
-        svg.append("text")
+
+        const {clientX, clientY} = event;
+        // d3.select("#tooltip").remove();
+        d3.select('#mainDiv')
+            .append("text")
+            .style('position', 'absolute')
             .attr("id", "tooltip")
-            .attr("x", `${d3.pointer(event)[0] + 'px'}`)
-            .attr("y", `${d3.pointer(event)[1] + 80 + 'px'}`)
-            .attr("text-anchor", "left")
+            .attr('z-index', 99999)
+            .style("top", `${clientY}px`)
+            .style("left", `${clientX}px`)
+            .attr("text-anchor", "center")
             .attr("font-size", "20px")
             .attr("fill", "blue")
             .text('x:' + d.sepalLength + ' y:' + d.sepalWidth);

@@ -4,6 +4,7 @@
 <script setup>
 import * as d3 from 'd3';
 import {onMounted, ref} from 'vue';
+// const chartContainer = ref(null);
 const width = ref(0);
 const height = ref(0);
 onMounted(() => {
@@ -28,7 +29,6 @@ const drawLineChart = () => {
       .attr("id", "lineSvg")
       .attr('width', width.value)
       .attr('height', height.value);
-
   const margin = {top: 15, bottom: 25, left: 25, right: 15}
 
   const data = [
@@ -73,6 +73,31 @@ const drawLineChart = () => {
   // //y轴绘制
   g.append('g').attr('transform', `translate(0, 0)`).call(yAxis)
 
+//标记数据点
+  g.append('g')
+      .selectAll('circle')
+      .data(data)
+      .enter()
+      .append('circle')
+      .attr('r', 3)
+      .attr('cx', d => xScale(d.x))
+      .attr('cy', d => yScale(d.y))
+      .attr('fill', 'rgba(2,86,134,0.99)')
+      .on("mouseover", function (event, selectedObj) {
+        console.log("鼠标进入事件", event);
+        console.log("选择集", selectedObj);
+      })
+
+  // .transition()
+  // .duration(1600)
+  // .attr('r', 4.2);
+
+
+
+
+
+
+
 
   //绘制折线
   const paths = g.append('path')
@@ -108,28 +133,6 @@ const drawLineChart = () => {
       .style('font-family', 'Arial')
       .style('font-size', '15px')
       .style('fill', 'rgba(203,91,43,0.85)');
-  //标记数据点
-  g.append('g')
-      .selectAll('circle')
-      .data(data)
-      .enter()
-      .append('circle')
-      .attr('r', 0)
-      .attr('cx', d => xScale(d.x))
-      .attr('cy', d => yScale(d.y))
-      .attr('fill', 'rgba(2,86,134,0.99)')
-      .on("mouseover", ($event, d) => {
-        console.log("鼠标悬停事件", $event);
-        console.log("数据", d);
-      })
-      .on("click", function ($event, d){
-        console.log("鼠标点击事件", $event);
-        console.log("数据", d);
-      })
-      .transition()
-      .duration(1600)
-      .attr('r', 4.2);
-
 
 };
 
