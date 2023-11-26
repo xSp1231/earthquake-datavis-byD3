@@ -1,0 +1,164 @@
+{
+    "平均震级":[
+        {
+            "province": "北京",
+            "value": 1.61
+        },
+        {
+            "province": "上海",
+            "value": 4.99
+        },
+        {
+            "province": "广东",
+            "value": 9.02
+        },
+        {
+            "province": "江苏",
+            "value": 1.08
+        },
+        {
+            "province": "浙江",
+            "value": 5.16
+        },
+        {
+            "province": "湖南",
+            "value": 9.12
+        },
+        {
+            "province": "湖北",
+            "value": 9.63
+        },
+        {
+            "province": "河南",
+            "value": 1.13
+        },
+        {
+            "province": "山东",
+            "value": 4.34
+        },
+        {
+            "province": "福建",
+            "value": 9.88
+        },
+        {
+            "province": "江西",
+            "value": 1.09
+        },
+        {
+            "province": "四川",
+            "value": 7.18
+        },
+        {
+            "province": "安徽",
+            "value": 6.64
+        }
+    ],
+    "最高震级":[
+        {
+            "province": "北京",
+            "value": 6.53
+        },
+        {
+            "province": "上海",
+            "value": 5.66
+        },
+        {
+            "province": "广东",
+            "value": 1.73
+        },
+        {
+            "province": "江苏",
+            "value": 5.45
+        },
+        {
+            "province": "浙江",
+            "value": 3.36
+        },
+        {
+            "province": "湖南",
+            "value": 5.31
+        },
+        {
+            "province": "湖北",
+            "value": 2.4
+        },
+        {
+            "province": "河南",
+            "value": 6.47
+        },
+        {
+            "province": "山东",
+            "value": 9.22
+        },
+        {
+            "province": "福建",
+            "value": 5.03
+        },
+        {
+            "province": "江西",
+            "value": 5.77
+        },
+        {
+            "province": "四川",
+            "value": 9.63
+        },
+        {
+            "province": "安徽",
+            "value": 3.59
+        }
+    ],
+    "最低震级":[
+        {
+            "province": "北京",
+            "value": 1.62
+        },
+        {
+            "province": "上海",
+            "value": 9.42
+        },
+        {
+            "province": "广东",
+            "value": 7.16
+        },
+        {
+            "province": "江苏",
+            "value": 9.55
+        },
+        {
+            "province": "浙江",
+            "value": 7.68
+        },
+        {
+            "province": "湖南",
+            "value": 5.91
+        },
+        {
+            "province": "湖北",
+            "value": 6.97
+        },
+        {
+            "province": "河南",
+            "value": 6.05
+        },
+        {
+            "province": "山东",
+            "value": 9.42
+        },
+        {
+            "province": "福建",
+            "value": 3.13
+        },
+        {
+            "province": "江西",
+            "value": 5.67
+        },
+        {
+            "province": "四川",
+            "value": 2.87
+        },
+        {
+            "province": "安徽",
+            "value": 9.54
+        }
+    ]
+}
