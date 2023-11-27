@@ -222,6 +222,33 @@ const drawHeatMap = () => {
         .on('mousemove', (e, d) => {
           // console.log(e.offsetX, e.offsetY)
           d3.select(e.target).attr('fill', '#e1d928');
+          const regionName = d.properties.name;
+          // 根据省份名称查找对应的数据
+          const region = provinceNum.find(region => region.name === regionName);
+          if(region){
+            // console.log('Clicked region:', regionName);
+            d3.select("#tooltip").remove();
+            d3.select("#tooltip-border").remove();
+            svg.append("rect")
+                .attr("id", "tooltip-border")
+                .attr("x", `${d3.pointer(event)[0] + 10}px`)
+                .attr("y", `${d3.pointer(event)[1] -15}px`)
+                .attr("width", "130px")
+                .attr("height", "35px")
+                .attr("rx", "5px")
+                .attr("ry", "5px")
+                .attr("fill", "rgba(248,244,244,0.66)")
+                .attr("stroke", "#67696c")
+                .attr("stroke-width", "1px");
+            svg.append("text")
+                .attr("id", "tooltip")
+                .attr("x", `${d3.pointer(event)[0] +10+ 'px'}`)
+                .attr("y", `${d3.pointer(event)[1] + 10 + 'px'}`)
+                .attr("text-anchor", "left")
+                .attr("font-size", "18px")
+                .attr('fill', '#67696c')
+                .text(region.name+":"+region.value+"次");
+          }
         // .attr('stroke-color', '#cc8238')// 设置路径的颜色为相同的值
 
         })
@@ -233,28 +260,6 @@ const drawHeatMap = () => {
           const region = provinceNum.find(region => region.name === regionName);
           if(region){
             store.commit('getDataByProvince',regionName) //状态变换函数
-            // console.log('Clicked region:', regionName);
-             d3.select("#tooltip").remove();
-             d3.select("#tooltip-border").remove();
-          svg.append("rect")
-              .attr("id", "tooltip-border")
-              .attr("x", `${d3.pointer(event)[0] + 10}px`)
-              .attr("y", `${d3.pointer(event)[1] -15}px`)
-              .attr("width", "130px")
-              .attr("height", "35px")
-              .attr("rx", "5px")
-              .attr("ry", "5px")
-              .attr("fill", "rgba(248,244,244,0.66)")
-              .attr("stroke", "#67696c")
-              .attr("stroke-width", "1px");
-          svg.append("text")
-              .attr("id", "tooltip")
-              .attr("x", `${d3.pointer(event)[0] +10+ 'px'}`)
-              .attr("y", `${d3.pointer(event)[1] + 10 + 'px'}`)
-              .attr("text-anchor", "left")
-              .attr("font-size", "18px")
-              .attr('fill', '#67696c')
-              .text(region.name+":"+region.value+"次");
           }
 
         })

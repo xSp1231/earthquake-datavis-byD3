@@ -159,7 +159,6 @@ export default {
 
       layout.start()
 
-      // console.log(layout)
 
       function draw(words) {
         wordcloudGroup.selectAll('text')
@@ -220,6 +219,6 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #ebecef;
+  background-color: #ffffff;
 }
 </style>

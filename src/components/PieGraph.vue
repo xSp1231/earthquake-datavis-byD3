@@ -10,16 +10,6 @@ import { useStore } from 'vuex'
 const store = useStore()
 const width = ref(0);
 const height = ref(0);
-// const dataObject = [
-//   { name: "德阳", value: 100 },
-//   { name: "绵阳", value: 120 },
-//   { name: "成都", value: 200 },
-//   { name: "乐山", value: 150 },
-//   { name: "雅安", value: 80 },
-//   { name: "九寨沟", value: 70 },
-//   { name: "南充", value: 110 },
-//   { name: "宜宾", value: 130 },
-// ];
 const info = computed(() => store.state.dataObject);
 watch(
     () => store.state.dataObject, // 表达式，这里是你要监听的state变量

@@ -85,9 +85,6 @@ export default createStore({
             var t
              d3.csv("earthquake_data_province_intro.csv").then(data=>{
                  console.log("d3 读取的data is ",data)
-                 // for(var i=0;i<data.length;i++){
-                 //     console.log("d is ",data[i])
-                 // }
                  t=data.filter(d => d.province===province)
                  console.log(t[0].intro);
                  console.log(t[0].deathnum);
@@ -101,12 +98,10 @@ export default createStore({
                  console.log( state.provinceIntro.death=t[0].death);
 
                  t= JSON.parse(t[0].pie_json);
-                 console.log("t is ",t)
-                 const pieData = t.map(obj => {
+                 state.dataObject
+                     = t.map(obj => {
                      return { name: obj.area, value: obj.value };
                  });
-                 console.log("pieData is ",pieData)
-                 state.dataObject=pieData;
 
              })
             console.log("饼图数据发生变化", state.dataObject)

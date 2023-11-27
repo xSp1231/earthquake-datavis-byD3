@@ -58,6 +58,7 @@
         <div class="image-container" v-bind:style="{ 'background-image': 'url(' + image_path+ ')' }"  ></div>
         <div class="intro">
 <!--          <h6 style="color: #797575;font-size:15px;">地区地理简介:</h6>-->
+          <p style="font-size:18px;color: #444446">{{provinceName}}</p>
           <p>{{intro}}</p>
         </div>
       </div>
@@ -81,18 +82,10 @@ const info = computed(() => store.state.dataObject);
 watch(
     () => store.state.provinceName, // 表达式，这里是你要监听的state变量
     (newVal, oldVal) => {
-      console.log('监听到数组变化', newVal, oldVal);
       provinceName.value=newVal;
       // 在这里执行你想要的逻辑操作
-      console.log(provinceName.value);
-      console.log(path+provinceName.value+last);
       image_path.value=path+provinceName.value+last;
-      console.log(image_path.value);
-      console.log(store.state.provinceIntro.intro);
       intro.value=store.state.provinceIntro.intro;
-      console.log(store.state.provinceIntro.injure,"真实里的")
-      console.log(store.state.provinceIntro.death)
-      console.log(store.state.provinceIntro.total)
       injurenum.value=store.state.provinceIntro.injure;
       deathnum.value =store.state.provinceIntro.death;
       totalnum.value=store.state.provinceIntro.total;

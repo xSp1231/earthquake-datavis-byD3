@@ -4,7 +4,6 @@
 <script setup>
 import * as d3 from 'd3';
 import {onMounted, ref} from 'vue';
-// const chartContainer = ref(null);
 const width = ref(0);
 const height = ref(0);
 onMounted(() => {
@@ -87,18 +86,6 @@ const drawLineChart = () => {
         console.log("鼠标进入事件", event);
         console.log("选择集", selectedObj);
       })
-
-  // .transition()
-  // .duration(1600)
-  // .attr('r', 4.2);
-
-
-
-
-
-
-
-
   //绘制折线
   const paths = g.append('path')
       .datum(data)
@@ -134,6 +121,15 @@ const drawLineChart = () => {
       .style('font-size', '15px')
       .style('fill', 'rgba(203,91,43,0.85)');
 
+  //title
+  g.append("text")
+      .attr('x',(width.value - margin.left - margin.right)/4-60)
+      .attr('y', 10)
+      .text("xx地区近十年地震次数折线图")
+      .style('font-family', 'Arial')
+      .style('font-size', '17px')
+      .style("font-weight", "bold")
+      .style('fill', '#a19f9f');
 };
 
 
