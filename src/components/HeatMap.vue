@@ -5,6 +5,8 @@
 <script setup>
 import * as d3 from 'd3';
 import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex'
+const store = useStore()
 
 const width = ref(0);
 const height = ref(0);
@@ -21,7 +23,6 @@ onMounted(() => {
 window.addEventListener('resize', () => {
   const svg = d3.select("#heatMapSvg");
   svg.remove();
-
   // 获取宽度和高度
   width.value = document.getElementById('heatMap').offsetWidth;
   height.value = document.getElementById('heatMap').offsetHeight;
@@ -167,8 +168,6 @@ const provinceNum=[
   },
 ]
 
-
-
 const drawHeatMap = () => {
   const margin = { top: 20, left: 20, bottom: 20, right: 20 };
   const svg = d3
@@ -188,7 +187,7 @@ const drawHeatMap = () => {
   const colorScale = d3.scaleLinear()
       .domain([0, d3.max(provinceNum, d => d.value)]) // 数据的范围
       .range(["#fdbb84", "rgb(250,0,0)"]); // 对应的颜色范围
-  console.log("颜色比例尺",colorScale(1000))
+  // console.log("颜色比例尺",colorScale(1000))
 
   var title=svg.append("text")
       .attr("id","title")
@@ -217,16 +216,24 @@ const drawHeatMap = () => {
           const regionName = d.properties.name;//得到地区名
           // 根据省份名称查找对应的数据
           const region = provinceNum.find(region => region.name === regionName);
-              console.log("fill + region ",region)
+              // console.log("fill + region ",region)
           return colorScale(region.value)
         })
+        .on('mousemove', (e, d) => {
+          // console.log(e.offsetX, e.offsetY)
+          d3.select(e.target).attr('fill', '#e1d928');
+        // .attr('stroke-color', '#cc8238')// 设置路径的颜色为相同的值
+
+        })
+
         .on("click",(e,d)=>{
             // 获取当前区域的名称
             const regionName = d.properties.name;
           // 根据省份名称查找对应的数据
           const region = provinceNum.find(region => region.name === regionName);
           if(region){
-            console.log('Clicked region:', regionName);
+            store.commit('getDataByProvince',regionName) //状态变换函数
+            // console.log('Clicked region:', regionName);
              d3.select("#tooltip").remove();
              d3.select("#tooltip-border").remove();
           svg.append("rect")
@@ -251,10 +258,13 @@ const drawHeatMap = () => {
           }
 
         })
-        .on("mouseout", () => {
+        .on("mouseout", (e,d) => {
           d3.select("#tooltip").remove();
           d3.select("#tooltip-border").remove();
-
+          const regionName = d.properties.name;//得到地区名
+          // 根据省份名称查找对应的数据
+          const region = provinceNum.find(region => region.name === regionName);
+          d3.select(e.target).attr("fill",colorScale(region.value));
         });
   });
 

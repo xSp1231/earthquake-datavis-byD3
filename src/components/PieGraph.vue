@@ -4,38 +4,50 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import * as d3 from "d3";
-
+import { useStore } from 'vuex'
+const store = useStore()
 const width = ref(0);
 const height = ref(0);
-const dataObject = [
-  { date: "2016", money: 100 },
-  { date: "2017", money: 120 },
-  { date: "2018", money: 200 },
-  { date: "2019", money: 150 },
-  { date: "2020", money: 80 },
-  { date: "2021", money: 70 },
-  { date: "2022", money: 110 },
-  { date: "2023", money: 130 },
-];
+// const dataObject = [
+//   { name: "德阳", value: 100 },
+//   { name: "绵阳", value: 120 },
+//   { name: "成都", value: 200 },
+//   { name: "乐山", value: 150 },
+//   { name: "雅安", value: 80 },
+//   { name: "九寨沟", value: 70 },
+//   { name: "南充", value: 110 },
+//   { name: "宜宾", value: 130 },
+// ];
+const info = computed(() => store.state.dataObject);
+watch(
+    () => store.state.dataObject, // 表达式，这里是你要监听的state变量
+    (newVal, oldVal) => {
+      console.log('监听到数组变化', newVal, oldVal);
+      createChart(store.state.dataObject);
+      // 在这里执行你想要的逻辑操作
+    },
+    { deep: true, immediate: true }
+);
 
 onMounted(() => {
   const PieGraph = document.getElementById("PieGraph");
   width.value = PieGraph.offsetWidth;
   height.value = PieGraph.offsetHeight;
-  createChart(dataObject);
-
+  createChart(info.value);
   // 监听窗口变化
   window.addEventListener("resize", () => {
     d3.select("#PieGraphSvg").remove();
     width.value = PieGraph.offsetWidth;
     height.value = PieGraph.offsetHeight;
-    createChart(dataObject);
+    createChart(info.value);
   });
 });
 
 function createChart(data) {
+  d3.select("#PieGraphSvg").remove();
+  console.log("---------------------饼图组件中得到的data is ",data)
   const svg = d3
       .select("#PieGraph")
       .append("svg")
@@ -63,11 +75,11 @@ function createChart(data) {
       .append("g")
       .attr("transform", `translate(${width.value / 2},${height.value / 2})`);
 
-  const arcAngle = d3.pie().sort(null).value((d) => d.money);
+  const arcAngle = d3.pie().sort(null).value((d) => d.value);
 
   const scaleRadius = d3
       .scaleLinear()
-      .domain([0, d3.max(data.map((d) => d.money))])
+      .domain([0, d3.max(data.map((d) => d.value))])
       .range([0, Math.min(width.value, height.value) * 0.5 * 0.5]);
 
   const slices = chart
@@ -77,7 +89,7 @@ function createChart(data) {
       .append("path")
       .attr("class", "arc")
       .attr("fill", (d, i) => d3.schemeCategory10[i % 10])
-      .attr("d", d3.arc().outerRadius((d) => scaleRadius(d.data.money)).innerRadius(config.innerRadius))
+      .attr("d", d3.arc().outerRadius((d) => scaleRadius(d.data.value)).innerRadius(config.innerRadius))
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut)
       .on("click", handleClick);
@@ -97,7 +109,7 @@ function createChart(data) {
       .duration(0)
       .delay(config.animateDuration)
       .attr("transform", (d) => `translate(${getArcCentroid(scaleRadius(d.value) * 2.5, d, true)})`)
-      .text((d) => `${d.data.date}: ${d.data.money}`);
+      .text((d) => `${d.data.name}: ${d.data.value}`);
 
   const linePoints = getLinePoints();
 
