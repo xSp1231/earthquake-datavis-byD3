@@ -13,7 +13,7 @@ const height = ref(0);
 const createChart = () => {
   d3.csv('earthquake_data.csv')
       .then(data => {
-        console.log(data);
+        // console.log(data);
         const svg = d3.select('#mainDiv')
             .append('svg')
             .attr('id', 'mainDivSvg')

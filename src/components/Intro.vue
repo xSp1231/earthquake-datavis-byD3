@@ -55,46 +55,53 @@
   <el-row :gutter="2" style="margin-top: 0px">
     <el-col :span="24">
       <div class="areaintro" style=" display: flex;width: 100%;height: 128px;border-radius: 6px;">
-
         <div class="image-container" v-bind:style="{ 'background-image': 'url(' + image_path+ ')' }"  ></div>
-
         <div class="intro">
-          <h6 style="color: #797575;font-size:15px;">地区地理简介:</h6>
+<!--          <h6 style="color: #797575;font-size:15px;">地区地理简介:</h6>-->
           <p>{{intro}}</p>
         </div>
-
       </div>
     </el-col>
   </el-row>
 </template>
 
-<script>
-export default {
-  name: "Broadcast",
-  data(){
-    return{
-      image_path:"https://xsp-datastore.oss-cn-chengdu.aliyuncs.com/7c43c2cc775d41e5adbe5d4e8b3ba50d8693941ac5c2bbac9c046a685be2b2dcc95c261.jpg"
-    }
-  },
-  // computed: { //cpmputed也可以实现监听数据  但是为什么要使用watch呢 因为可以在watch里面使用函数
-  //   ...mapState(['provinceintro']),
-  //   image_path(){
-  //     return "http://127.0.0.1:8000/media/"+this.provinceintro['img']
-  //   },
-  //   injurenum() { //各个身份每一年的地震次数
-  //     return this.provinceintro['injure']
-  //   },
-  //   deathnum(){ //各个身份每一年的地震次数
-  //     return this.provinceintro['death']
-  //   },
-  //   totalnum() { //各个身份每一年的地震次数
-  //     return this.provinceintro['total']
-  //   },
-  //   intro() { //各个身份每一年的地震次数
-  //     return this.provinceintro['intro']
-  //   },
-  // },
-}
+<script setup>
+const injurenum=ref(0);
+const deathnum=ref(0);
+const totalnum=ref(0);
+const intro=ref('');
+const image_path = ref('');
+const provinceName = ref('');
+const last = '.jpg';
+const path = 'public/pictures/'
+import {useStore} from "vuex";
+import {computed, watch, onMounted, ref} from "vue";
+const store = useStore();
+const info = computed(() => store.state.dataObject);
+watch(
+    () => store.state.provinceName, // 表达式，这里是你要监听的state变量
+    (newVal, oldVal) => {
+      console.log('监听到数组变化', newVal, oldVal);
+      provinceName.value=newVal;
+      // 在这里执行你想要的逻辑操作
+      console.log(provinceName.value);
+      console.log(path+provinceName.value+last);
+      image_path.value=path+provinceName.value+last;
+      console.log(image_path.value);
+      console.log(store.state.provinceIntro.intro);
+      intro.value=store.state.provinceIntro.intro;
+      console.log(store.state.provinceIntro.injure,"真实里的")
+      console.log(store.state.provinceIntro.death)
+      console.log(store.state.provinceIntro.total)
+      injurenum.value=store.state.provinceIntro.injure;
+      deathnum.value =store.state.provinceIntro.death;
+      totalnum.value=store.state.provinceIntro.total;
+    },
+    { deep: true, immediate: true }
+);
+onMounted(()=>{
+  console.log(info.value);
+})
 
 </script>
 

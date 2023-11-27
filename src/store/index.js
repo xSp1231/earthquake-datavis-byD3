@@ -89,6 +89,17 @@ export default createStore({
                  //     console.log("d is ",data[i])
                  // }
                  t=data.filter(d => d.province===province)
+                 console.log(t[0].intro);
+                 console.log(t[0].deathnum);
+                 console.log(t[0].injurenum);
+                 console.log(t[0].total);
+                 state.provinceIntro.intro=t[0].intro;
+                 state.provinceIntro.injure=t[0].injure;
+                 state.provinceIntro.death=t[0].death;
+                 state.provinceIntro.total=t[0].total;
+                 console.log( state.provinceIntro.injure=t[0].injure , "vuex里的");
+                 console.log( state.provinceIntro.death=t[0].death);
+
                  t= JSON.parse(t[0].pie_json);
                  console.log("t is ",t)
                  const pieData = t.map(obj => {
@@ -100,5 +111,9 @@ export default createStore({
              })
             console.log("饼图数据发生变化", state.dataObject)
         },
+        getProvinceData(province){
+            state.provinceName=province;
+            console.log(province);
+        }
     },
 })

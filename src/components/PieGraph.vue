@@ -24,13 +24,12 @@ const info = computed(() => store.state.dataObject);
 watch(
     () => store.state.dataObject, // 表达式，这里是你要监听的state变量
     (newVal, oldVal) => {
-      console.log('监听到数组变化', newVal, oldVal);
+      // console.log('监听到数组变化', newVal, oldVal);
       createChart(store.state.dataObject);
       // 在这里执行你想要的逻辑操作
     },
     { deep: true, immediate: true }
 );
-
 onMounted(() => {
   const PieGraph = document.getElementById("PieGraph");
   width.value = PieGraph.offsetWidth;
@@ -47,7 +46,7 @@ onMounted(() => {
 
 function createChart(data) {
   d3.select("#PieGraphSvg").remove();
-  console.log("---------------------饼图组件中得到的data is ",data)
+  // console.log("---------------------饼图组件中得到的data is ",data)
   const svg = d3
       .select("#PieGraph")
       .append("svg")
