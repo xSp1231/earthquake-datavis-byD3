@@ -73,7 +73,7 @@ const intro=ref('');
 const image_path = ref('');
 const provinceName = ref('');
 const last = '.jpg';
-const path = 'public/pictures/'
+const path = 'pictures/'
 import {useStore} from "vuex";
 import {computed, watch, onMounted, ref} from "vue";
 const store = useStore();
