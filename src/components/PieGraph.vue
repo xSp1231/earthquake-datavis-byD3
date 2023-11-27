@@ -4,6 +4,7 @@
 </template>
 
 <script setup>
+const ProvinceName =ref('');
 import {computed, onMounted, ref, watch} from "vue";
 import * as d3 from "d3";
 import { useStore } from 'vuex'
@@ -24,6 +25,8 @@ const info = computed(() => store.state.dataObject);
 watch(
     () => store.state.dataObject, // 表达式，这里是你要监听的state变量
     (newVal, oldVal) => {
+      console.log(store.state.provinceName);
+      ProvinceName.value=store.state.provinceName;
       // console.log('监听到数组变化', newVal, oldVal);
       createChart(store.state.dataObject);
       // 在这里执行你想要的逻辑操作
@@ -43,7 +46,6 @@ onMounted(() => {
     createChart(info.value);
   });
 });
-
 function createChart(data) {
   d3.select("#PieGraphSvg").remove();
   // console.log("---------------------饼图组件中得到的data is ",data)
@@ -53,7 +55,13 @@ function createChart(data) {
       .attr("id", "PieGraphSvg")
       .attr("width", width.value)
       .attr("height", height.value);
-
+  svg.append("text")
+      .attr("x", width.value / 2)
+      .attr("y", 30)
+      .attr("text-anchor", "middle")
+      .text(ProvinceName.value+"省"+"地震发生次数前八地区")
+      .style("font-size", "24px")
+      .style("fill", "#333");
   const config = {
     textColor: "#000",
     lineColor: "#000",
@@ -62,25 +70,19 @@ function createChart(data) {
     innerRadius: width.value / 30,
     hoverScale: 1.1,
   };
-
   const scaleTextDx = d3
       .scaleLinear()
       .domain([0, Math.PI / 2])
       .range([config.textOffsetH, config.textOffsetH * 3]);
-
   svg.attr("width", width.value).attr("height", height.value);
-
   const chart = svg
       .append("g")
       .attr("transform", `translate(${width.value / 2},${height.value / 2})`);
-
   const arcAngle = d3.pie().sort(null).value((d) => d.value);
-
   const scaleRadius = d3
       .scaleLinear()
       .domain([0, d3.max(data.map((d) => d.value))])
       .range([0, Math.min(width.value, height.value) * 0.5 * 0.5]);
-
   const slices = chart
       .selectAll(".arc")
       .data(arcAngle(data))
@@ -92,7 +94,6 @@ function createChart(data) {
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut)
       .on("click", handleClick);
-
   const labels = chart
       .selectAll(".label")
       .data(arcAngle(data))
@@ -109,9 +110,7 @@ function createChart(data) {
       .delay(config.animateDuration)
       .attr("transform", (d) => `translate(${getArcCentroid(scaleRadius(d.value) * 2.5, d, true)})`)
       .text((d) => `${d.data.name}: ${d.data.value}`);
-
   const linePoints = getLinePoints();
-
   const lines = chart
       .selectAll(".line")
       .data(getLinePoints())
@@ -124,13 +123,11 @@ function createChart(data) {
       .attr("fill", "none")
       .attr("stroke", config.lineColor)
       .attr("d", generateLine);
-
   function computeTextDx(d) {
     const middleAngle = (d.endAngle + d.startAngle) / 2;
     const dx = middleAngle < Math.PI ? scaleTextDx(Math.abs(middleAngle - Math.PI / 2)) : -scaleTextDx(Math.abs(middleAngle - Math.PI * 3 / 2));
     return dx;
   }
-
   function getLinePoints() {
     return arcAngle(data).map((d) => {
       const radius = scaleRadius(d.value);
