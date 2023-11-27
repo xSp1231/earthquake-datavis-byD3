@@ -49,9 +49,11 @@ function createChart(data) {
       .attr("x", width.value / 2)
       .attr("y", 30)
       .attr("text-anchor", "middle")
-      .text(ProvinceName.value+"省"+"地震发生次数前八地区")
-      .style("font-size", "24px")
-      .style("fill", "#333");
+      .text(ProvinceName.value+"近十年地震发生次数前八地区")
+      .style('font-family', 'Arial')
+      .style('font-size', '17px')
+      .style("font-weight", "bold")
+      .style('fill', '#a19f9f');
   const config = {
     textColor: "#000",
     lineColor: "#000",
