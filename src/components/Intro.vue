@@ -2,7 +2,7 @@
   <el-row :gutter="2">
     <el-col :span="8">
       <div class="statistic-card">
-        <el-statistic :value=injurenum>
+        <el-statistic :value=store.state.injure>
           <template #title>
             <div style="display: inline-flex; align-items: center;color: #5c2dde;font-size: 15px">
               地震受伤人数
@@ -22,7 +22,7 @@
     </el-col>
     <el-col :span="8">
       <div class="statistic-card">
-        <el-statistic :value=deathnum>
+        <el-statistic :value=store.state.death>
           <template #title>
             <div style="display: inline-flex; align-items: center;color: #101010;font-size: 16px">
               地震死亡人数
@@ -42,7 +42,7 @@
     </el-col>
     <el-col :span="8">
       <div class="statistic-card">
-        <el-statistic :value=totalnum title="New transactions today">
+        <el-statistic :value=store.state.total title="New transactions today">
           <template #title>
             <div style="display: inline-flex; align-items: center;color:#ff0000;font-size: 16px">
               地震伤亡人数
@@ -59,7 +59,7 @@
         <div class="intro">
 <!--          <h6 style="color: #797575;font-size:15px;">地区地理简介:</h6>-->
           <p style="font-size:18px;color: #444446">{{provinceName}}</p>
-          <p>{{intro}}</p>
+          <p>{{store.state.intro}}</p>
         </div>
       </div>
     </el-col>
@@ -85,10 +85,6 @@ watch(
       provinceName.value=newVal;
       // 在这里执行你想要的逻辑操作
       image_path.value=path+provinceName.value+last;
-      intro.value=store.state.provinceIntro.intro;
-      injurenum.value=store.state.provinceIntro.injure;
-      deathnum.value =store.state.provinceIntro.death;
-      totalnum.value=store.state.provinceIntro.total;
     },
     { deep: true, immediate: true }
 );

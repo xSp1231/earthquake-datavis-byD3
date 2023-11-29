@@ -44,6 +44,7 @@ const drawHeatMap = () => {
       .attr('width', width.value)
       .attr('height', height.value);
 
+
   const projection = d3.geoMercator()
       .center([103.7, 36.9])
       .scale(660)
@@ -53,9 +54,45 @@ const drawHeatMap = () => {
 //颜色比例尺
   const colorScale = d3.scaleLinear()
       .domain([0, d3.max(provinceNum, d => d.value)]) // 数据的范围
-      .range(["#fdbb84", "rgb(250,0,0)"]); // 对应的颜色范围
+      .range(["#fdbb84", "rgb(255,0,0)"]); // 对应的颜色范围
   // console.log("颜色比例尺",colorScale(1000))
-  const tooltip = d3.select('#toolTipMap');
+  // 创建图例
+  const legend = svg.append("g")
+      .attr("class", "legend")
+      .attr("transform", `translate(${width.value *0.85}, ${height.value*0.72})`);
+
+// 添加图例矩形和标签
+  const legendRects = legend.selectAll("rect")
+      .data(colorScale.ticks(10))
+      .enter()
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", (d, i) => i * 20)
+      .attr("width", 23)
+      .attr("height", 21)
+      .attr("fill", d => colorScale(d));
+
+  const legendLabels = legend.selectAll("text")
+      .data(colorScale.ticks(9))
+      .enter()
+      .append("text")
+      .attr("x", 30)
+      .attr("y", (d, i) => i * 20 + 15)
+      .style('font-family', 'Arial')
+      .style('font-size', '14px')
+      .style("font-weight", "bold")
+      .style('fill', '#444343')
+      .text(d => d);
+
+// 添加图例标题
+  legend.append("text")
+      .attr("x", -10)
+      .attr("y", -10)
+      .style('font-family', 'Arial')
+      .style('font-size', '14px')
+      .style("font-weight", "bold")
+      .style('fill', '#444343')
+      .text("地震次数");
 
   var title=svg.append("text")
       .attr("id","title")
@@ -73,7 +110,6 @@ const drawHeatMap = () => {
     svg.selectAll('path')
         .data(data.features)
         .enter()
-        .append("g")
         .append('path')
         .attr('d', path)
         .attr('opacity', 0.6)
