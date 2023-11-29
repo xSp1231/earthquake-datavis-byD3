@@ -44,7 +44,6 @@ const drawHeatMap = () => {
       .attr('width', width.value)
       .attr('height', height.value);
 
-
   const projection = d3.geoMercator()
       .center([103.7, 36.9])
       .scale(660)
@@ -83,7 +82,7 @@ const drawHeatMap = () => {
       .style("font-weight", "bold")
       .style('fill', '#444343')
       .text(d => d);
-
+  const tooltip = d3.select('#toolTipMap');
 // 添加图例标题
   legend.append("text")
       .attr("x", -10)
@@ -131,6 +130,7 @@ const drawHeatMap = () => {
           // 根据省份名称查找对应的数据
           const region = provinceNum.find(region => region.name === regionName);
           if(region){
+
             tooltip
                 .style('visibility', "visible")
                 .style('left', `${d3.pointer(event)[0]+10}px`)
@@ -152,11 +152,12 @@ const drawHeatMap = () => {
 
         })
         .on("mouseout", (e,d) => {
-          tooltip.style('visibility', "hidden");
+
           const regionName = d.properties.name;//得到地区名
           // 根据省份名称查找对应的数据
           const region = provinceNum.find(region => region.name === regionName);
           d3.select(e.target).attr("fill",colorScale(region.value));
+
         });
   });
 
