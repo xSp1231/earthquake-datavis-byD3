@@ -1,5 +1,8 @@
 <template>
-  <div id="heatMap"></div>
+
+  <div id="heatMap">
+    <div id="toolTipMap"></div>
+  </div>
 </template>
 
 <script setup>
@@ -52,6 +55,7 @@ const drawHeatMap = () => {
       .domain([0, d3.max(provinceNum, d => d.value)]) // 数据的范围
       .range(["#fdbb84", "rgb(250,0,0)"]); // 对应的颜色范围
   // console.log("颜色比例尺",colorScale(1000))
+  const tooltip = d3.select('#toolTipMap');
 
   var title=svg.append("text")
       .attr("id","title")
@@ -69,6 +73,7 @@ const drawHeatMap = () => {
     svg.selectAll('path')
         .data(data.features)
         .enter()
+        .append("g")
         .append('path')
         .attr('d', path)
         .attr('opacity', 0.6)
@@ -90,28 +95,11 @@ const drawHeatMap = () => {
           // 根据省份名称查找对应的数据
           const region = provinceNum.find(region => region.name === regionName);
           if(region){
-            // console.log('Clicked region:', regionName);
-            d3.select("#tooltip").remove();
-            d3.select("#tooltip-border").remove();
-            svg.append("rect")
-                .attr("id", "tooltip-border")
-                .attr("x", `${d3.pointer(event)[0] + 10}px`)
-                .attr("y", `${d3.pointer(event)[1] -15}px`)
-                .attr("width", "130px")
-                .attr("height", "35px")
-                .attr("rx", "5px")
-                .attr("ry", "5px")
-                .attr("fill", "rgba(248,244,244,0.66)")
-                .attr("stroke", "#67696c")
-                .attr("stroke-width", "1px");
-            svg.append("text")
-                .attr("id", "tooltip")
-                .attr("x", `${d3.pointer(event)[0] +10+ 'px'}`)
-                .attr("y", `${d3.pointer(event)[1] + 10 + 'px'}`)
-                .attr("text-anchor", "left")
-                .attr("font-size", "18px")
-                .attr('fill', '#67696c')
-                .text(region.name+":"+region.value+"次");
+            tooltip
+                .style('visibility', "visible")
+                .style('left', `${d3.pointer(event)[0]+10}px`)
+                .style('top', `${d3.pointer(event)[1]-15}px`)
+                .html(region.name+":"+region.value+"次");
           }
         // .attr('stroke-color', '#cc8238')// 设置路径的颜色为相同的值
 
@@ -128,8 +116,7 @@ const drawHeatMap = () => {
 
         })
         .on("mouseout", (e,d) => {
-          d3.select("#tooltip").remove();
-          d3.select("#tooltip-border").remove();
+          tooltip.style('visibility', "hidden");
           const regionName = d.properties.name;//得到地区名
           // 根据省份名称查找对应的数据
           const region = provinceNum.find(region => region.name === regionName);
@@ -144,5 +131,26 @@ const drawHeatMap = () => {
   width: 100%;
   height: 100%;
   margin: 0;
+  position: relative;
+}
+#toolTipMap{
+  position: absolute;
+  max-width: 120px;
+  border-style: solid;
+  white-space: nowrap;
+  z-index: 9999999;
+  box-shadow: rgba(0, 0, 0, 0.2) 1px 2px 10px;
+  background-color: rgb(250,250,250);
+  border-width: 1px;
+  border-radius: 4px;
+  color: rgb(102, 102, 102);
+  font: 13px "Microsoft YaHei";
+  padding: 3px;
+  top: 0;
+  left: 0;
+  border-color: rgb(255, 255, 255);
+  pointer-events: none;
+  transition: opacity 0.1s cubic-bezier(0.23, 1, 0.32, 1) 0s, visibility 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0s, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
+  visibility:hidden;
 }
 </style>
