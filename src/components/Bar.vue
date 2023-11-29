@@ -1,6 +1,6 @@
 <template>
   <div id="BarTitle">
-    <h3>中国近十年的</h3>
+    <h4>中国近十年的</h4>
     <div style="width: 20px;"></div><el-select v-model="this.value" placeholder="平均震级" size="middle"
       @change="selectChange" style="width: 100px;">
       <el-option v-for="item in this.options" :key="item" :label="item" :value="item" />
@@ -38,7 +38,7 @@ export default {
         left: 50,
         top: 20,
         right: 50,
-        bottom: 20
+        bottom: 40
       }
       const svg = d3.select("#BarGraph")
         .append("svg")
@@ -48,7 +48,7 @@ export default {
         .attr("viewBox", [0, 0, this.width, this.height])
       // .style("background-color", "blue")
       console.log("bar", this.dataset[this.value])
-      const myData = this.dataset[this.value];
+      const myData = this.dataset[this.value].sort((a, b) => b.value - a.value).slice(0, 20);
       //定义x轴和y轴比例尺
       const xScale = d3.scaleBand().domain(myData.map(d => d.province))
         .range([0, this.width - margin.left - margin.right])
@@ -72,20 +72,20 @@ export default {
         .attr("transform", `translate(${margin.left},${margin.top})`)
         .call(yAxis)
 
-      svg.selectAll(".axis").selectAll('path')
-        .attr("fill", "none")
-        .attr("stroke", "black")
-        .attr("shape-rendering", "crispEdges")
-        .attr("font-weight", "bold")
-      svg.selectAll(".axis").selectAll('line')
-        .attr("fill", "none")
-        .attr("stroke", "black")
-        .attr("shape-rendering", "crispEdges")
-        .attr("font-weight", "bold");
-      svg.selectAll(".axis").selectAll('text')
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "12px")
-        .attr("font-weight", "bold");
+      // svg.selectAll(".axis").selectAll('path')
+      //   .attr("fill", "none")
+      //   .attr("stroke", "black")
+      //   .attr("shape-rendering", "crispEdges")
+      //   .attr("font-weight", "bold")
+      // svg.selectAll(".axis").selectAll('line')
+      //   .attr("fill", "none")
+      //   .attr("stroke", "black")
+      //   .attr("shape-rendering", "crispEdges")
+      //   .attr("font-weight", "bold");
+      // svg.selectAll(".axis").selectAll('text')
+      //   .attr("font-family", "sans-serif")
+      //   .attr("font-size", "12px")
+      //   .attr("font-weight", "bold");
       //画柱状图
       const bar = svg.append("g")
         .attr("fill", "steelblue")
@@ -137,16 +137,19 @@ export default {
 
 <style scoped>
 #BarTitle {
-  height: 15%;
+  height: 10%;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #a19f9f;
+  font-weight: bold;
+  font-size: 17px;
 }
+
 
 #BarGraph {
   width: 100%;
-  height: 85%;
-  background-color: aliceblue;
+  height: 90%;
   position: relative;
 }
 </style>

@@ -2,31 +2,31 @@
   <div class="home">
     <div class="top">
       <div class="tl">
-        <div class="intro">
-    <intro></intro>
+        <div class="intro boxStyle">
+          <intro></intro>
         </div>
-        <div class="pie">
+        <div class="pie boxStyle">
           <pie-graph></pie-graph>
         </div>
       </div>
-      <div class="tm">
+      <div class="tm boxStyle">
         <HeatMap></HeatMap>
       </div>
       <div class="tr">
-        <div class="worldCloud">
+        <div class="worldCloud boxStyle">
           <world-cloud></world-cloud>
         </div>
-        <div class="line">
+        <div class="line boxStyle">
           <Line></Line>
         </div>
       </div>
     </div>
 
     <div class="bottom">
-      <div class="bl">
+      <div class="bl boxStyle">
         <Scatter></Scatter>
       </div>
-      <div class="br">
+      <div class="br boxStyle">
         <Bar></Bar>
       </div>
     </div>
@@ -44,14 +44,6 @@ import Intro from "../components/Intro.vue";
 </script>
 
 <style scoped>
-div .el-card {
-  /*width: 100%;*/
-  height: 100%;
-  margin: 0;
-  border-radius: 6px;
-  background-color: #ffffff;
-}
-
 .home {
   position: absolute;
   top: 0;
@@ -59,6 +51,14 @@ div .el-card {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background-color: rgb(251, 251, 251);
+}
+
+.boxStyle {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
 }
 
 .top {
@@ -70,88 +70,69 @@ div .el-card {
 }
 
 .bottom {
+  margin-top: 1%;
   display: flex;
   width: 100%;
-  height: 35%;
-  /*background-color: #d0b9b1;*/
+  height: 34%;
 }
 
-.top * {
-  /*选取所有子类*/
-  margin-left: 8px;
-  margin-top: 3px;
-  margin-bottom: 3px;
-  height: 98%;
-  border-radius: 6px;
-}
+
 
 .tl {
   width: 30%;
   /*background-color: #c56c45;*/
 }
 
-.tl * {
-  margin: 0;
-}
 
 .intro {
   width: 100%;
   height: 37%;
+  margin-bottom: 2%;
   /*background-color: #bacad0;*/
 }
 
 .pie {
-  margin-top: 6px;
   width: 100%;
   height: 62%;
-  /*background-color: #bacad0;*/
 }
 
 .tm {
-  /*top-mid*/
-  width: 40%;
+  width: 38%;
+  margin-left: 1%;
+  margin-right: 1%;
   /*background-color: #7bb4c9;*/
 }
 
 .tr {
   width: 30%;
-  /*background-color: #4d7e3c;*/
 }
 
-.tr * {
-  margin: 0;
-}
 
 .worldCloud {
   width: 100%;
   height: 49%;
-  /*background-color: #bacad0;*/
+  margin-bottom: 2%;
 }
 
 .line {
   margin-top: 6px;
   width: 100%;
-  height: 51%;
-  /*background-color: #bacad0;*/
+  height: 49%;
 }
 
 .bl {
-  border-radius: 6px;
-  margin-top: 8px;
-  width: 48%;
-  height: 96%;
-  margin-right: 0.8%;
-  margin-left: 8px;
+  width: 49.5%;
+  height: 95%;
+  margin-right: 0.5%;
+  padding-bottom: 5%;
   /*background-color: #d9b661;*/
 }
 
 .br {
-  border-radius: 6px;
-  margin-top: 8px;
   /*margin-right: 0.8%;*/
-  margin-left: 2.2%;
-  width: 48%;
-  height: 96%;
+  margin-left: 0.5%;
+  width: 49.5%;
+  height: 100%;
   /*background-color: #b5cbae;*/
 }
 </style>

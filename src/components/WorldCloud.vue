@@ -5,128 +5,27 @@
 <script>
 import * as d3 from 'd3';
 import * as cloud from 'd3-cloud';
+import WorldCloud from '../dataTest/WorldCloud.json';
+import { useStore } from 'vuex'
+
 export default {
   name: "WorldCloud",
   data: () => {
     return {
-      dataset: [
-        {
-          name: "新疆",
-          value: 7779
-        },
-        {
-          name: "四川",
-          value: 4770
-        },
-        {
-          name: "西藏",
-          value: 3494
-        },
-        {
-          name: "云南",
-          value: 3038
-        },
-        {
-          name: "青海",
-          value: 2156
-        },
-        {
-          name: "台湾",
-          value: 1526
-        },
-        {
-          name: "内蒙古",
-          value: 852
-        },
-        {
-          name: "甘肃",
-          value: 597
-        },
-        {
-          name: "辽宁",
-          value: 471
-        },
-        {
-          name: "山东",
-          value: 319
-        },
-        {
-          name: "河北",
-          value: 258
-        },
-        {
-          name: "山西",
-          value: 244
-        },
-        {
-          name: "广东",
-          value: 225
-        },
-        {
-          name: "吉林",
-          value: 157
-        },
-        {
-          name: "贵州",
-          value: 145
-        }, {
-          name: "宁夏",
-          value: 142
-        }, {
-          name: "黑龙江",
-          value: 138
-        }, {
-          name: "陕西",
-          value: 125
-        }, {
-          name: "广西",
-          value: 127
-        }, {
-          name: "重庆",
-          value: 125
-        }, {
-          name: "河南",
-          value: 123
-        }, {
-          name: "湖北",
-          value: 106
-        }, {
-          name: "安徽",
-          value: 93
-        }, {
-          name: "江苏",
-          value: 94
-        }, {
-          name: "浙江",
-          value: 90
-        }, {
-          name: "福建",
-          value: 84
-        }, {
-          name: "江西",
-          value: 47
-        }, {
-          name: "湖南",
-          value: 26
-        }, {
-          name: "北京",
-          value: 20
-        }, {
-          name: "海南",
-          value: 16
-        }, {
-          name: "天津",
-          value: 12
-        }, {
-          name: "上海",
-          value: 1
-        }
-      ],
+      dataset: WorldCloud,
       width: 0,
-      height: 0
+      height: 0,
+      store: null,
+      wordcloudGroup: null
     }
   },
+  setup() {
+
+  },
   methods: {
+    drawGraph(words) {
+
+    },
     draw() {
       const fill = d3.scaleOrdinal(d3.schemeCategory10)
       // 提取value属性的值，并使用Math.min()获取最小值
@@ -135,55 +34,53 @@ export default {
       const fontSizeScale = d3.scaleLinear()
         .domain([minValue, d3.max(this.dataset, d => d.value)]) // 输入的权重值范围
         .range([this.width / 28, this.width / 9]); // 输出的字体大小范围
-      const svg = d3.select('#WorldCloudGraph').append('svg').attr("id", "WorldCloudGraphSvg").attr('width', this.width).attr('height', this.height);
+      const svg = d3.select('#WorldCloudGraph').append('svg')
+        .attr("id", "WorldCloudGraphSvg")
+        .attr('width', this.width)
+        .attr('height', this.height);
       const tooltip = d3.select('#WorldCloudGraph')
         .append('div')
-        .attr('class', 'tooltip')
+        .style('id', 'tooltip_word')
         .style('opacity', 0)
         .style('position', 'absolute')
         .style('background-color', 'white')
-        .style('height', '30px')
+        .style('height', '35px')
+        .style("width", '130px')
         .style("display", 'flex')
-
-      const layout = cloud()//注意，这不是D3自带的API，是d3.layout.cloud.js中的API
-        .size([this.width, this.height])
-        .words(this.dataset)
-        .padding(1) //每个词之间的间隔，不设置时默认为0
-        .rotate(() => ~~(Math.random()) * 90) //~~双非按位取反运算符，功能类似floor()，但速度更快。
-        .font('Impact')
-        .fontSize(d => fontSizeScale(d.value))
-        .on('end', draw)
-
-      const wordcloudGroup = svg.append('g')
-        .attr('transform', `translate(${layout.size()[0] / 2} ,${layout.size()[1] / 2})`)
-
-      layout.start()
-
-
-      function draw(words) {
-        wordcloudGroup.selectAll('text')
+        .style("justify-content", "center")
+        .style("align-items", "center")
+        // .style("stroke", "#67696c")
+        .style("border", "1px solid #67696c")
+        .style("background-color", "rgba(248,244,244,0.66)")
+        .style("border-radius", "4px")
+        .style("font-size", "18px")
+        .style("color", "#67696c")
+      // .style("background-color", "red")
+      let drawGraph = (words) => {
+        d3.select("#words").selectAll('text')
           .data(words)
           .enter()
           .append("g")
-          .on('mousemove', function (event, d) {
+          .on('mouseover', function (event, d) {
+
+            console.log("我来了")
             d3.select(this)
               .style('cursor', 'pointer');
             tooltip
               .style('opacity', 0.9)
               .style('left', `${d.x - 40 + layout.size()[0] / 2}px`)
-              .style('top', `${d.y - 40 + layout.size()[1] / 2}px`)
-              .html(d.name + " " + d.value);
+              .style('top', `${d.y - 30 + layout.size()[1] / 2}px`)
+              .html(d.name + ":" + d.value + "次");
           })
-          .on('mouseout', function () {
+          .on('mouseout', () => {
+            console.log("我出去了")
             d3.select(this)
               .style('cursor', 'default');
-
             tooltip.style('opacity', 0);
           })
-          .on('click', function (event, d) {
+          .on('click', (event, d) => {
             tooltip.style('opacity', 0);
-            // 处理点击事件的逻辑
-            console.log('点击了词语:', d.name);
+            this.$store.commit('changeProvince', d.name)
           })
           .append('text')
           .attr('font-size', d => `${d.size}px`)
@@ -194,13 +91,30 @@ export default {
           .text(d => d.name)
 
       }
+
+      const layout = cloud()//注意，这不是D3自带的API，是d3.layout.cloud.js中的API
+        .size([this.width, this.height])
+        .words(this.dataset)
+        .padding(1) //每个词之间的间隔，不设置时默认为0
+        .rotate(() => ~~(Math.random()) * 90) //~~双非按位取反运算符，功能类似floor()，但速度更快。
+        .font('Impact')
+        .fontSize(d => fontSizeScale(d.value))
+        .on('end', drawGraph)
+      svg.append('g')
+        .attr("id", "words")
+        .attr('transform', `translate(${layout.size()[0] / 2} ,${layout.size()[1] / 2})`)
+
+      layout.start()
+
+
     }
   },
 
   mounted() {
+    this.$store = useStore()
     // 获取宽度和高度
     this.width = document.getElementById('WorldCloudGraph').offsetWidth;
-    this.height = document.getElementById('WorldCloudGraph').offsetHeight;
+    this.height = document.getElementById('WorldCloudGraph').offsetHeight - 10;
     this.draw();
 
     //监听窗口变化
@@ -208,7 +122,7 @@ export default {
       document.getElementById('WorldCloudGraphSvg').remove();
       // 获取宽度和高度
       this.width = document.getElementById('WorldCloudGraph').offsetWidth;
-      this.height = document.getElementById('WorldCloudGraph').offsetHeight;
+      this.height = document.getElementById('WorldCloudGraph').offsetHeight - 10;
       this.draw();
     });
   }
@@ -219,6 +133,6 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background-color: #ffffff;
+  padding-top: 10px;
 }
 </style>

@@ -33,6 +33,7 @@ export default createStore({
             { name: "南11", value: 11 },
             { name: "宜11", value: 13 },
         ],
+        WorldCloud:"四川",
         provinceName:"四川",
         provinceIntro:{ //设置默认数据
             "injure": 691995,
@@ -109,6 +110,11 @@ export default createStore({
         getProvinceData(province){
             state.provinceName=province;
             console.log(province);
+        },
+        changeProvince(state, payload)
+        {
+            state.WorldCloud = payload;
+            console.log("dasdad",payload)
         }
     },
 })
