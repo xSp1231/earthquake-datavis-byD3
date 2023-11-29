@@ -13,29 +13,14 @@ export default createStore({
             { name: "南充", value: 110 },
             { name: "宜宾", value: 130 },
         ],
-        temp:[
-            { name: "德", value: 10 },
-            { name: "绵", value: 12 },
-            { name: "成", value: 20 },
-            { name: "乐", value: 15 },
-            { name: "雅", value: 8 },
-            { name: "九", value: 7 },
-            { name: "南", value: 11 },
-            { name: "宜", value: 13 },
-        ],
-        temp1:[
-            { name: "德1", value: 10 },
-            { name: "绵11", value: 12 },
-            { name: "成11", value: 20 },
-            { name: "乐11", value: 15 },
-            { name: "雅11", value: 8 },
-            { name: "九11", value: 7 },
-            { name: "南11", value: 11 },
-            { name: "宜11", value: 13 },
-        ],
         WorldCloud:"四川",
         provinceName:"四川",
+        total:0,
+        injure:0,
+        death:0,
+        intro:"hello,world",
         provinceIntro:{ //设置默认数据
+            "id":'11',
             "injure": 691995,
             "death": 343,
             "total": 692338,
@@ -79,7 +64,6 @@ export default createStore({
     },
     mutations: {
         getDataByProvince(state, province) { //得到每个省份的相关信息 展示在左边 饼图 和统计列表里面
-            state.count++;
             state.provinceName=province
             console.log("得到的省份数据", state.provinceIntro.piedata)
             console.log("点击的省份", province)
@@ -87,17 +71,16 @@ export default createStore({
              d3.csv("earthquake_data_province_intro.csv").then(data=>{
                  console.log("d3 读取的data is ",data)
                  t=data.filter(d => d.province===province)
-                 console.log(t[0].intro);
-                 console.log(t[0].deathnum);
-                 console.log(t[0].injurenum);
-                 console.log(t[0].total);
-                 state.provinceIntro.intro=t[0].intro;
-                 state.provinceIntro.injure=t[0].injure;
-                 state.provinceIntro.death=t[0].death;
-                 state.provinceIntro.total=t[0].total;
-                 console.log( state.provinceIntro.injure=t[0].injure , "vuex里的");
-                 console.log( state.provinceIntro.death=t[0].death);
-
+                 console.log("t[0] is ",t[0])
+                 console.log("介绍",t[0].intro);
+                 console.log("总数",t[0].total);
+                 state.provinceIntro=t[0];
+                 state.intro=t[0].intro;
+                 state.injure=t[0].injure;
+                 state.death=t[0].death;
+                 state.total=t[0].total;
+                 console.log( state.provinceIntro===t[0] , "vuex里的");
+                 console.log("vuex里面的intro",state.total);
                  t= JSON.parse(t[0].pie_json);
                  state.dataObject
                      = t.map(obj => {

@@ -38,7 +38,6 @@ onMounted(() => {
 });
 function createChart(data) {
   d3.select("#PieGraphSvg").remove();
-  // console.log("---------------------饼图组件中得到的data is ",data)
   const svg = d3
       .select("#PieGraph")
       .append("svg")
@@ -96,7 +95,29 @@ function createChart(data) {
       .attr("d", d3.arc().outerRadius((d) => scaleRadius(d.data.value)).innerRadius(config.innerRadius))
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut)
-      .on("click", handleClick);
+      .on("click", handleClick)
+// 设置初始状态
+  slices.attr("d", d3.arc().outerRadius(0).innerRadius(config.innerRadius));
+
+// 使用过渡效果更新饼图
+  slices.transition()
+      .duration(600)
+      .attrTween("d", function(d) {
+        const initialArc = d3.arc()
+            .outerRadius(10)
+            .innerRadius(config.innerRadius);
+
+        const finalArc = d3.arc()
+            .outerRadius((d) => scaleRadius(d.data.value))
+            .innerRadius(config.innerRadius);
+
+        const interpolate = d3.interpolate(initialArc(d), finalArc(d));
+
+        return function(t) {
+          return interpolate(t);
+        };
+      });
+
   const labels = chart
       .selectAll(".label")
       .data(arcAngle(data))
@@ -112,7 +133,7 @@ function createChart(data) {
       .duration(0)
       .delay(config.animateDuration)
       .attr("transform", (d) => `translate(${getArcCentroid(scaleRadius(d.value) * 2.5, d, true)})`)
-      .style('font-size', '17px')
+      .style('font-size', '16px')
       .text((d) => `${d.data.name}: ${d.data.value}`);
   const linePoints = getLinePoints();
   const lines = chart

@@ -116,12 +116,12 @@ const createChart = () => {
             .style('position', 'absolute')
             .attr("id", "tooltip")
             .attr('z-index', 99999)
-            .style("top", `${clientY}px`)
+            .style("top", `${clientY-20}px`)
             .style("left", `${clientX - 80}px`)
             .attr("text-anchor", "center")
             .attr("font-size", "20px")
             .attr("fill", "blue")
-            .text('震源深度:' + d.sepalLength + ' 震级:' + d.sepalWidth);
+            .text('震源深度:' + d.sepalLength + 'km  震级:' + d.sepalWidth+"级");
         })
         .on("mouseout", () => {
           d3.select("#tooltip").remove();
