@@ -55,12 +55,12 @@ function createChart(data) {
       .style("font-weight", "bold")
       .style('fill', '#a19f9f');
   const config = {
-    textColor: "#000",
-    lineColor: "#000",
+    textColor: "#2a2828",
+    lineColor: "#c91212",
     animateDuration: 0,
-    textOffsetH: 10,
-    innerRadius: width.value / 30,
-    hoverScale: 1.1,
+    textOffsetH: 20,
+    innerRadius: width.value / 32,
+    hoverScale: 1.3,
   };
   const scaleTextDx = d3
       .scaleLinear()
@@ -75,13 +75,24 @@ function createChart(data) {
       .scaleLinear()
       .domain([0, d3.max(data.map((d) => d.value))])
       .range([0, Math.min(width.value, height.value) * 0.5 * 0.5]);
+  const color= [
+    "#087aab",
+    "rgb(76,122,196)",
+    "#11a4af",
+    "#9fe1c7",
+    "#cccdd0",
+    "#a44040",
+    "rgb(239,129,95)",
+    "#c45656",
+  ]
+
   const slices = chart
       .selectAll(".arc")
       .data(arcAngle(data))
       .enter()
       .append("path")
       .attr("class", "arc")
-      .attr("fill", (d, i) => d3.schemeCategory10[i % 10])
+      .attr("fill", (d, i) => color[i % 10])
       .attr("d", d3.arc().outerRadius((d) => scaleRadius(d.data.value)).innerRadius(config.innerRadius))
       .on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut)
@@ -101,6 +112,7 @@ function createChart(data) {
       .duration(0)
       .delay(config.animateDuration)
       .attr("transform", (d) => `translate(${getArcCentroid(scaleRadius(d.value) * 2.5, d, true)})`)
+      .style('font-size', '17px')
       .text((d) => `${d.data.name}: ${d.data.value}`);
   const linePoints = getLinePoints();
   const lines = chart
@@ -113,7 +125,7 @@ function createChart(data) {
       .duration(0)
       .delay(config.animateDuration)
       .attr("fill", "none")
-      .attr("stroke", config.lineColor)
+      .attr("stroke", (d,i)=>color[i%8])
       .attr("d", generateLine);
   function computeTextDx(d) {
     const middleAngle = (d.endAngle + d.startAngle) / 2;
