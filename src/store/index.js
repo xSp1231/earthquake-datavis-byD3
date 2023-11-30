@@ -63,7 +63,8 @@ export default createStore({
         },
     },
     mutations: {
-        getDataByProvince(state, province) { //得到每个省份的相关信息 展示在左边 饼图 和统计列表里面
+        getDataByProvince(state, province) {//得到每个省份的相关信息 展示在左边 饼图 和统计列表里面
+            state.WorldCloud=province
             state.provinceName=province
             console.log("得到的省份数据", state.provinceIntro.piedata)
             console.log("点击的省份", province)
